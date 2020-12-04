@@ -1,0 +1,10 @@
+rule "Update BigClock Temperature"
+when
+        Item SmartWeather_Air_Temperature received update or
+        System started
+then
+        val tempF = SmartWeather_Air_Temperature.state as Number
+        val int tempC = Math::round((tempF.floatValue-32)*5/9).intValue
+        val String query = "http://192.168.30.246/mailbox/temp=" + tempC
+        sendHttpGetRequest(query)
+end
